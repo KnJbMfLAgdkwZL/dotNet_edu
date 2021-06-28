@@ -6,7 +6,7 @@ namespace WebApplication.models
 {
     public abstract class Model
     {
-        private string Path { set; get; } = "../../mainDB.sqlite";
+        private string Path { set; get; } = "../mainDB.sqlite";
         private SqliteConnection Connection { set; get; }
 
         protected Model()
