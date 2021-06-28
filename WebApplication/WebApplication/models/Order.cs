@@ -1,37 +1,35 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
+using SQLitePCL;
 
 namespace WebApplication.models
 {
-    public class Order : Model
+    public class Order
     {
-        /// <summary>
-        /// Получить данные таблицы order по указаному id
-        /// </summary>
-        /// <param name="id">Условие поиска</param>
-        /// <returns>Данные выборки</returns>
-        public List<Dictionary<string, object>> SelectById(long id)
+        public int id { set; get; }
+        public string name { set; get; }
+        public string description { set; get; }
+        public string dateCreate { set; get; }
+
+        public Order()
         {
-            return Select(new Dictionary<string, string>()
-            {
-                {"id", id.ToString()}
-            });
         }
 
-        /// <summary>
-        /// Добавляет новую запись в таблицу order
-        /// </summary>
-        /// <param name="name">Имя</param>
-        /// <param name="description">Описание</param>
-        /// <returns>Вернет true в случае успеха</returns>
-        public bool Insert(string name, string description)
+        public Order(object id, object name, object description, object dateCreate)
         {
-            return base.Insert(new Dictionary<string, string>()
-            {
-                {"name", name},
-                {"description", description},
-                {"dateCreate", DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss")}
-            });
+            this.id = Int32.Parse(id.ToString() ?? string.Empty);
+            this.name = name.ToString();
+            this.description = description.ToString();
+            this.dateCreate = dateCreate.ToString();
+        }
+
+        public Order(string name, string description)
+        {
+            this.id = 0;
+            this.name = name;
+            this.description = description;
+            this.dateCreate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
     }
 }

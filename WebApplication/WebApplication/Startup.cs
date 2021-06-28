@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,32 +32,28 @@ namespace WebApplication
             {
                 endpoints.MapGet("/order/{id}", async context =>
                 {
-                    var sid = context.Request.RouteValues["id"];
-
+                    object sid = context.Request.RouteValues["id"];
                     Int64.TryParse(sid?.ToString(), out long id);
 
-                    var order = new Order();
-                    var data = order.SelectById(id);
-                    var options = new JsonSerializerOptions
-                    {
-                        WriteIndented = true
-                    };
-                    var json = JsonSerializer.Serialize(data, options);
+                    OrderRepository orderRepository = new OrderRepository();
+                    List<Order> data = orderRepository.SelectById(id);
+                    string json = orderRepository.ToJson(data);
 
-                    Console.WriteLine(json);
                     await context.Response.WriteAsync(json);
                 });
 
                 endpoints.MapPost("/order/create", async context =>
                 {
-                    var form = context.Request.Form;
+                    IFormCollection form = context.Request.Form;
                     if (form.ContainsKey("name") && form.ContainsKey("description"))
                     {
-                        var name = form["name"];
-                        var description = form["description"];
+                        string name = form["name"];
+                        string description = form["description"];
 
-                        var order = new Order();
-                        bool res = order.Insert(name, description);
+                        OrderRepository orderRepository = new OrderRepository();
+                        Order order = new Order(name, description);
+                        bool res = orderRepository.Insert(order);
+
                         if (res)
                         {
                             await context.Response.WriteAsync("OK");
