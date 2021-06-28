@@ -16,8 +16,6 @@ namespace WebApplication.models
             {
                 {"id", id.ToString()}
             });
-
-
             return rows.Select(i => new Order(
                     long.Parse(i["id"].ToString() ?? string.Empty),
                     i["name"].ToString(),
@@ -27,15 +25,19 @@ namespace WebApplication.models
             ).ToList();
         }
 
-        public bool Insert(Order order)
+        public long Insert(Order order)
         {
             Connection.Open();
             SqliteCommand command = Connection.CreateCommand();
             command.CommandText =
-                $"INSERT INTO '{Table}' (id, name, description, dateCreate) VALUES (null, $name, $description, datetime('now'))";
+                $"INSERT INTO '{Table}' (id, name, description, dateCreate) VALUES (null, $name, $description, datetime('now'));" +
+                $"select last_insert_rowid()";
             command.Parameters.AddWithValue($"$name", order.name);
             command.Parameters.AddWithValue($"$description", order.description);
-            return command.ExecuteNonQuery() > 0;
+            Object temp = command.ExecuteScalar();
+            long id = long.Parse(temp.ToString());
+            Connection.Close();
+            return id;
         }
 
         public string ToJson(List<Order> data)

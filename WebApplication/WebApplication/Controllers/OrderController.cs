@@ -8,7 +8,6 @@ namespace WebApplication.controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        //public ActionResult<string> Home([FromQuery(Name = "id")] long id)
         [HttpGet("{id:long}")]
         public ActionResult<string> Home([FromRoute(Name = "id")] long id)
         {
@@ -18,14 +17,12 @@ namespace WebApplication.controllers
             return Ok(json);
         }
 
-        [HttpPost("")]
+        [HttpPost("create")]
         public ActionResult<string> Home([FromBody] Order order)
         {
             OrderRepository orderRepository = new OrderRepository();
-            bool res = orderRepository.Insert(order);
-            if (res)
-                return Ok("OK");
-            return Problem("WRONG DATA PARAM");
+            long id = orderRepository.Insert(order);
+            return Ok(id);
         }
     }
 }

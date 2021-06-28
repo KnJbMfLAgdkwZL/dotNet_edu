@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Data.Sqlite;
@@ -36,17 +37,21 @@ namespace WebApplication.models
             return data;
         }
 
-        protected bool Insert(Dictionary<string, string> arguments)
+        protected long Insert(Dictionary<string, string> arguments)
         {
             Connection.Open();
             SqliteCommand command = Connection.CreateCommand();
             string keys = string.Join(", ", arguments.Select(i => $"{i.Key}").ToArray());
             string values = string.Join(", ", arguments.Select(i => $"${i.Key}").ToArray());
-            string sql = $"INSERT INTO '{Table}' ({keys}) VALUES ({values})";
+            string sql = $"INSERT INTO '{Table}' ({keys}) VALUES ({values});" +
+                         $"select last_insert_rowid()";
             foreach (var (key, val) in arguments)
                 command.Parameters.AddWithValue($"${key}", val);
             command.CommandText = sql;
-            return command.ExecuteNonQuery() > 0;
+            Object temp = command.ExecuteScalar();
+            long id = int.Parse(temp.ToString());
+            Connection.Close();
+            return id;
         }
     }
 }
