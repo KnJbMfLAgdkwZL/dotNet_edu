@@ -8,7 +8,7 @@ namespace WebApplication.models
     {
         protected abstract string Table { set; get; }
         private string Path { set; get; } = "../mainDB.sqlite";
-        private SqliteConnection Connection { set; get; }
+        protected SqliteConnection Connection { set; get; }
 
         protected Repository()
         {
