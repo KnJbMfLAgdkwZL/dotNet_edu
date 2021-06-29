@@ -1,5 +1,3 @@
-using System;
-
 namespace WebApplication.models
 {
     public class OrderSet

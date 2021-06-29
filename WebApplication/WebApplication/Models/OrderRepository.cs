@@ -9,9 +9,9 @@ namespace WebApplication.models
     {
         protected override string Table { set; get; } = "order";
 
-        public async Task<Order> SelectById(long id)
+        public async Task<Order> SelectByIdAsync(long id)
         {
-            var rows = await Select(new Dictionary<string, string>()
+            var rows = await SelectAsync(new Dictionary<string, string>()
             {
                 {"id", id.ToString()}
             });
@@ -24,7 +24,7 @@ namespace WebApplication.models
             ).ToList().FirstOrDefault();
         }
 
-        public async Task<long> Insert(OrderSet order)
+        public async Task<long> InsertAsync(OrderSet order)
         {
             Connection.Open();
             var command = Connection.CreateCommand();

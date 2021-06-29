@@ -16,7 +16,7 @@ namespace WebApplication.models
             Connection = new SqliteConnection($"Data Source={Path}");
         }
 
-        protected async Task<List<Dictionary<string, object>>> Select(Dictionary<string, string> arguments = null)
+        protected async Task<List<Dictionary<string, object>>> SelectAsync(Dictionary<string, string> arguments = null)
         {
             Connection.Open();
             var command = Connection.CreateCommand();
@@ -35,23 +35,6 @@ namespace WebApplication.models
                 data.Add(Enumerable.Range(0, reader.FieldCount).ToDictionary(reader.GetName, reader.GetValue));
             Connection.Close();
             return data;
-        }
-
-        protected async Task<long> Insert(Dictionary<string, string> arguments)
-        {
-            Connection.Open();
-            var command = Connection.CreateCommand();
-            var keys = string.Join(", ", arguments.Select(i => $"{i.Key}").ToArray());
-            var values = string.Join(", ", arguments.Select(i => $"${i.Key}").ToArray());
-            var sql = $"INSERT INTO '{Table}' ({keys}) VALUES ({values});" +
-                      $"select last_insert_rowid()";
-            foreach (var (key, val) in arguments)
-                command.Parameters.AddWithValue($"${key}", val);
-            command.CommandText = sql;
-            var temp = command.ExecuteScalar();
-            long id = int.Parse(temp.ToString());
-            Connection.Close();
-            return id;
         }
     }
 }

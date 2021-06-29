@@ -16,18 +16,18 @@ namespace WebApplication.controllers
         }
 
         [HttpGet("{id:long}")]
-        public async Task<ActionResult<Order>> Home([FromRoute(Name = "id")] long id)
+        public async Task<ActionResult<Order>> GetAsync([FromRoute(Name = "id")] long id)
         {
-            var data = await _repository.SelectById(id);
+            var data = await _repository.SelectByIdAsync(id);
             if (data == null)
                 return NotFound();
             return Ok(data);
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<long>> Home([FromBody] OrderSet order)
+        public async Task<ActionResult<long>> CreateAsync([FromBody] OrderSet order)
         {
-            return Ok(await _repository.Insert(order));
+            return Ok(await _repository.InsertAsync(order));
         }
     }
 }
