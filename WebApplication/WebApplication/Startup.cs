@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebApplication.models;
 
 namespace WebApplication
 {
@@ -10,8 +11,8 @@ namespace WebApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
             services.AddSwaggerGen(c => { });
+            services.AddScoped<IOrderRepository, OrderRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
