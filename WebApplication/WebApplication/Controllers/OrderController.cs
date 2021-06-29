@@ -18,7 +18,7 @@ namespace WebApplication.controllers
         }
 
         [HttpPost("create")]
-        public ActionResult<string> Home([FromBody] Order order)
+        public ActionResult<string> Home([FromBody] OrderSet order)
         {
             OrderRepository orderRepository = new OrderRepository();
             long id = orderRepository.Insert(order);
