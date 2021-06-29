@@ -21,7 +21,7 @@ namespace WebApplication.models
                     i["description"].ToString(),
                     DateTime.Parse(i["dateCreate"].ToString() ?? string.Empty)
                 )
-            ).ToList().First();
+            ).ToList().FirstOrDefault();
         }
 
         public long Insert(OrderSet order)

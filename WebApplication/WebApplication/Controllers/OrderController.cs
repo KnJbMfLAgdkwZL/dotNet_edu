@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.models;
 
@@ -15,15 +16,18 @@ namespace WebApplication.controllers
         }
 
         [HttpGet("{id:long}")]
-        public Order Home([FromRoute(Name = "id")] long id)
+        public ActionResult<Order> Home([FromRoute(Name = "id")] long id)
         {
-            return _repository.SelectById(id);
+            var data = _repository.SelectById(id);
+            if (data == null)
+                return NotFound();
+            return Ok(data);
         }
 
         [HttpPost("create")]
-        public long Home([FromBody] OrderSet order)
+        public ActionResult<long> Home([FromBody] OrderSet order)
         {
-            return _repository.Insert(order);
+            return Ok(_repository.Insert(order));
         }
     }
 }
