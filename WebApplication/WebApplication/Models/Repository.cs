@@ -19,8 +19,8 @@ namespace WebApplication.models
         protected List<Dictionary<string, object>> Select(Dictionary<string, string> arguments = null)
         {
             Connection.Open();
-            SqliteCommand command = Connection.CreateCommand();
-            string sql = $"SELECT * FROM '{Table}'";
+            var command = Connection.CreateCommand();
+            var sql = $"SELECT * FROM '{Table}'";
             if (arguments != null)
             {
                 foreach (var (key, val) in arguments)
@@ -29,8 +29,8 @@ namespace WebApplication.models
             }
 
             command.CommandText = sql;
-            SqliteDataReader reader = command.ExecuteReader();
-            List<Dictionary<string, object>> data = new List<Dictionary<string, object>>();
+            var reader = command.ExecuteReader();
+            var data = new List<Dictionary<string, object>>();
             while (reader.Read())
                 data.Add(Enumerable.Range(0, reader.FieldCount).ToDictionary(reader.GetName, reader.GetValue));
             Connection.Close();
@@ -40,15 +40,15 @@ namespace WebApplication.models
         protected long Insert(Dictionary<string, string> arguments)
         {
             Connection.Open();
-            SqliteCommand command = Connection.CreateCommand();
-            string keys = string.Join(", ", arguments.Select(i => $"{i.Key}").ToArray());
-            string values = string.Join(", ", arguments.Select(i => $"${i.Key}").ToArray());
-            string sql = $"INSERT INTO '{Table}' ({keys}) VALUES ({values});" +
-                         $"select last_insert_rowid()";
+            var command = Connection.CreateCommand();
+            var keys = string.Join(", ", arguments.Select(i => $"{i.Key}").ToArray());
+            var values = string.Join(", ", arguments.Select(i => $"${i.Key}").ToArray());
+            var sql = $"INSERT INTO '{Table}' ({keys}) VALUES ({values});" +
+                      $"select last_insert_rowid()";
             foreach (var (key, val) in arguments)
                 command.Parameters.AddWithValue($"${key}", val);
             command.CommandText = sql;
-            Object temp = command.ExecuteScalar();
+            var temp = command.ExecuteScalar();
             long id = int.Parse(temp.ToString());
             Connection.Close();
             return id;

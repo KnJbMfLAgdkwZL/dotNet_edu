@@ -12,7 +12,7 @@ namespace WebApplication.models
 
         public List<Order> SelectById(long id)
         {
-            List<Dictionary<string, object>> rows = Select(new Dictionary<string, string>()
+            var rows = Select(new Dictionary<string, string>()
             {
                 {"id", id.ToString()}
             });
@@ -28,21 +28,21 @@ namespace WebApplication.models
         public long Insert(OrderSet order)
         {
             Connection.Open();
-            SqliteCommand command = Connection.CreateCommand();
+            var command = Connection.CreateCommand();
             command.CommandText =
                 $"INSERT INTO '{Table}' (id, name, description, dateCreate) VALUES (null, $name, $description, datetime('now'));" +
                 $"select last_insert_rowid()";
             command.Parameters.AddWithValue($"$name", order.name);
             command.Parameters.AddWithValue($"$description", order.description);
-            Object temp = command.ExecuteScalar();
-            long id = long.Parse(temp.ToString());
+            var temp = command.ExecuteScalar();
+            var id = long.Parse(temp.ToString());
             Connection.Close();
             return id;
         }
 
         public string ToJson(List<Order> data)
         {
-            JsonSerializerOptions options = new JsonSerializerOptions
+            var options = new JsonSerializerOptions
             {
                 WriteIndented = true
             };

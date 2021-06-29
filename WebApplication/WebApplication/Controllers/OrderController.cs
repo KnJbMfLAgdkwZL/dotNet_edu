@@ -18,15 +18,15 @@ namespace WebApplication.controllers
         [HttpGet("{id:long}")]
         public ActionResult<string> Home([FromRoute(Name = "id")] long id)
         {
-            List<Order> data = _repository.SelectById(id);
-            string json = _repository.ToJson(data);
+            var data = _repository.SelectById(id);
+            var json = _repository.ToJson(data);
             return Ok(json);
         }
 
         [HttpPost("create")]
         public ActionResult<string> Home([FromBody] OrderSet order)
         {
-            long id = _repository.Insert(order);
+            var id = _repository.Insert(order);
             return Ok(id);
         }
     }
