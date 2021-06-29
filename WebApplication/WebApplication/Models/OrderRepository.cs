@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using Microsoft.Data.Sqlite;
 
 namespace WebApplication.models
@@ -10,7 +9,7 @@ namespace WebApplication.models
     {
         protected override string Table { set; get; } = "order";
 
-        public List<Order> SelectById(long id)
+        public Order SelectById(long id)
         {
             var rows = Select(new Dictionary<string, string>()
             {
@@ -22,7 +21,7 @@ namespace WebApplication.models
                     i["description"].ToString(),
                     DateTime.Parse(i["dateCreate"].ToString() ?? string.Empty)
                 )
-            ).ToList();
+            ).ToList().First();
         }
 
         public long Insert(OrderSet order)
@@ -38,15 +37,6 @@ namespace WebApplication.models
             var id = long.Parse(temp.ToString());
             Connection.Close();
             return id;
-        }
-
-        public string ToJson(List<Order> data)
-        {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
-            return JsonSerializer.Serialize(data, options);
         }
     }
 }
