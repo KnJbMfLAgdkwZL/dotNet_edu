@@ -25,7 +25,7 @@ namespace WebApplication.models
             ).ToList();
         }
 
-        public long Insert(Order order)
+        public long Insert(OrderSet order)
         {
             Connection.Open();
             SqliteCommand command = Connection.CreateCommand();

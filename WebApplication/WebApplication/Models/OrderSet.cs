@@ -2,15 +2,15 @@ using System;
 
 namespace WebApplication.models
 {
-    public class OrderSet : Order
+    public class OrderSet
     {
-        private new long id { set; get; }
-        public new string name { set; get; }
-        public new string description { set; get; }
-        private new DateTime dateCreate { set; get; }
+        public string name { set; get; }
+        public string description { set; get; }
 
-        public OrderSet(string name, string description) : base(name, description)
+        public OrderSet(string name, string description)
         {
+            this.name = name;
+            this.description = description;
         }
     }
 }

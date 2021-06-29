@@ -5,6 +5,6 @@ namespace WebApplication.models
     public interface IOrderRepository
     {
         public List<Order> SelectById(long id);
-        public long Insert(Order order);
+        public long Insert(OrderSet order);
     }
 }
