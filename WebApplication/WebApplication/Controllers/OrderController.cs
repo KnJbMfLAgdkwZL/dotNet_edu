@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.models;
 
@@ -16,18 +16,18 @@ namespace WebApplication.controllers
         }
 
         [HttpGet("{id:long}")]
-        public ActionResult<Order> Home([FromRoute(Name = "id")] long id)
+        public async Task<ActionResult<Order>> Home([FromRoute(Name = "id")] long id)
         {
-            var data = _repository.SelectById(id);
+            var data = await _repository.SelectById(id);
             if (data == null)
                 return NotFound();
             return Ok(data);
         }
 
         [HttpPost("create")]
-        public ActionResult<long> Home([FromBody] OrderSet order)
+        public async Task<ActionResult<long>> Home([FromBody] OrderSet order)
         {
-            return Ok(_repository.Insert(order));
+            return Ok(await _repository.Insert(order));
         }
     }
 }

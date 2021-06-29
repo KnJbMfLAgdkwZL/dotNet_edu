@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Data.Sqlite;
+using System.Threading.Tasks;
 
 namespace WebApplication.models
 {
@@ -9,9 +9,9 @@ namespace WebApplication.models
     {
         protected override string Table { set; get; } = "order";
 
-        public Order SelectById(long id)
+        public async Task<Order> SelectById(long id)
         {
-            var rows = Select(new Dictionary<string, string>()
+            var rows = await Select(new Dictionary<string, string>()
             {
                 {"id", id.ToString()}
             });
@@ -24,7 +24,7 @@ namespace WebApplication.models
             ).ToList().FirstOrDefault();
         }
 
-        public long Insert(OrderSet order)
+        public async Task<long> Insert(OrderSet order)
         {
             Connection.Open();
             var command = Connection.CreateCommand();

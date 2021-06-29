@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 
 namespace WebApplication.models
@@ -16,7 +16,7 @@ namespace WebApplication.models
             Connection = new SqliteConnection($"Data Source={Path}");
         }
 
-        protected List<Dictionary<string, object>> Select(Dictionary<string, string> arguments = null)
+        protected async Task<List<Dictionary<string, object>>> Select(Dictionary<string, string> arguments = null)
         {
             Connection.Open();
             var command = Connection.CreateCommand();
@@ -37,7 +37,7 @@ namespace WebApplication.models
             return data;
         }
 
-        protected long Insert(Dictionary<string, string> arguments)
+        protected async Task<long> Insert(Dictionary<string, string> arguments)
         {
             Connection.Open();
             var command = Connection.CreateCommand();
