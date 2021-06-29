@@ -6,5 +6,6 @@ namespace WebApplication.models
     {
         public List<Order> SelectById(long id);
         public long Insert(OrderSet order);
+        public string ToJson(List<Order> data);
     }
 }

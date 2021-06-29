@@ -8,20 +8,25 @@ namespace WebApplication.controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
+        private readonly IOrderRepository _repository;
+
+        public OrderController(IOrderRepository repository)
+        {
+            _repository = repository;
+        }
+
         [HttpGet("{id:long}")]
         public ActionResult<string> Home([FromRoute(Name = "id")] long id)
         {
-            OrderRepository orderRepository = new OrderRepository();
-            List<Order> data = orderRepository.SelectById(id);
-            string json = orderRepository.ToJson(data);
+            var data = _repository.SelectById(id);
+            var json = _repository.ToJson(data);
             return Ok(json);
         }
 
         [HttpPost("create")]
         public ActionResult<string> Home([FromBody] OrderSet order)
         {
-            OrderRepository orderRepository = new OrderRepository();
-            long id = orderRepository.Insert(order);
+            var id = _repository.Insert(order);
             return Ok(id);
         }
     }
