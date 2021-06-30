@@ -6,6 +6,7 @@ namespace WebApplication.controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _repository;
@@ -15,6 +16,8 @@ namespace WebApplication.controllers
             _repository = repository;
         }
 
+        [ProducesResponseType(200, Type = typeof(long))]
+        [ProducesResponseType(404)]
         [HttpGet("{id:long}")]
         public async Task<ActionResult<Order>> GetAsync([FromRoute(Name = "id")] long id)
         {

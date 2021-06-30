@@ -21,7 +21,7 @@ namespace WebApplication.models
                     i["description"].ToString(),
                     DateTime.Parse(i["dateCreate"].ToString() ?? string.Empty)
                 )
-            ).ToList().FirstOrDefault();
+            ).FirstOrDefault();
         }
 
         public async Task<long> InsertAsync(OrderSet order)
@@ -31,9 +31,9 @@ namespace WebApplication.models
             command.CommandText =
                 $"INSERT INTO '{Table}' (id, name, description, dateCreate) VALUES (null, $name, $description, datetime('now'));" +
                 $"select last_insert_rowid()";
-            command.Parameters.AddWithValue($"$name", order.name);
-            command.Parameters.AddWithValue($"$description", order.description);
-            var temp = command.ExecuteScalar();
+            command.Parameters.AddWithValue($"$name", order.Name);
+            command.Parameters.AddWithValue($"$description", order.Description);
+            var temp = await command.ExecuteScalarAsync();
             var id = long.Parse(temp.ToString());
             Connection.Close();
             return id;

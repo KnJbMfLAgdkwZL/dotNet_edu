@@ -19,7 +19,7 @@ namespace WebApplication.models
         protected async Task<List<Dictionary<string, object>>> SelectAsync(Dictionary<string, string> arguments = null)
         {
             Connection.Open();
-            var command = Connection.CreateCommand();
+            await using var command = Connection.CreateCommand();
             var sql = $"SELECT * FROM '{Table}'";
             if (arguments != null)
             {
@@ -29,9 +29,9 @@ namespace WebApplication.models
             }
 
             command.CommandText = sql;
-            var reader = command.ExecuteReader();
+            await using var reader = await command.ExecuteReaderAsync();
             var data = new List<Dictionary<string, object>>();
-            while (reader.Read())
+            while (await reader.ReadAsync())
                 data.Add(Enumerable.Range(0, reader.FieldCount).ToDictionary(reader.GetName, reader.GetValue));
             Connection.Close();
             return data;
