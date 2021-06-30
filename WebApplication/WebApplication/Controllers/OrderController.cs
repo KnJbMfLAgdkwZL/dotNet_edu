@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.models;
 
@@ -6,6 +6,7 @@ namespace WebApplication.controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _repository;
@@ -15,19 +16,23 @@ namespace WebApplication.controllers
             _repository = repository;
         }
 
+        [ProducesResponseType(200, Type = typeof(Order))]
+        [ProducesResponseType(404)]
         [HttpGet("{id:long}")]
-        public ActionResult<Order> Home([FromRoute(Name = "id")] long id)
+        public async Task<ActionResult<Order>> GetAsync([FromRoute(Name = "id")] long id)
         {
-            var data = _repository.SelectById(id);
+            var data = await _repository.SelectByIdAsync(id);
             if (data == null)
                 return NotFound();
             return Ok(data);
         }
 
+        [ProducesResponseType(200, Type = typeof(long))]
+        [ProducesResponseType(404)]
         [HttpPost("create")]
-        public ActionResult<long> Home([FromBody] OrderSet order)
+        public async Task<ActionResult<long>> CreateAsync([FromBody] OrderSet order)
         {
-            return Ok(_repository.Insert(order));
+            return Ok(await _repository.InsertAsync(order));
         }
     }
 }
