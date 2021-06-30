@@ -16,7 +16,7 @@ namespace WebApplication.controllers
             _repository = repository;
         }
 
-        [ProducesResponseType(200, Type = typeof(long))]
+        [ProducesResponseType(200, Type = typeof(Order))]
         [ProducesResponseType(404)]
         [HttpGet("{id:long}")]
         public async Task<ActionResult<Order>> GetAsync([FromRoute(Name = "id")] long id)
@@ -27,6 +27,8 @@ namespace WebApplication.controllers
             return Ok(data);
         }
 
+        [ProducesResponseType(200, Type = typeof(long))]
+        [ProducesResponseType(404)]
         [HttpPost("create")]
         public async Task<ActionResult<long>> CreateAsync([FromBody] OrderSet order)
         {
