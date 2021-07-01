@@ -21,7 +21,9 @@ namespace WebApplication.middleware
             {
                 var originalResponseBody = context.Response.Body;
                 context.Response.Body = swapStream;
+
                 await _next(context);
+
                 swapStream.Seek(0, SeekOrigin.Begin);
                 responseBody = new StreamReader(swapStream).ReadToEnd();
                 swapStream.Seek(0, SeekOrigin.Begin);
@@ -32,10 +34,15 @@ namespace WebApplication.middleware
             Console.WriteLine("Response");
             var statusCode = context.Response.StatusCode;
             Console.WriteLine($"StatusCode: {statusCode}");
+
             foreach (var (key, value) in context.Response.Headers)
                 Console.WriteLine($"\t{key}: {value}");
+
             if (responseBody.Length > 0)
+            {
                 Console.WriteLine($"ResponseBody: {responseBody}");
+            }
+
             Console.WriteLine();
         }
     }

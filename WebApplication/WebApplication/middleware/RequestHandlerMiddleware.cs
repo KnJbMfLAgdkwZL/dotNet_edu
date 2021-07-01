@@ -19,19 +19,28 @@ namespace WebApplication.middleware
         public async Task InvokeAsync(HttpContext context)
         {
             context.Request.EnableBuffering();
+
             Console.WriteLine("Request");
             var method = context.Request.Method;
             var url = context.Request.GetDisplayUrl();
             var protocol = context.Request.Protocol;
             Console.WriteLine($"{method} {url} {protocol}");
+
             foreach (var (key, value) in context.Request.Headers)
+            {
                 Console.WriteLine($"\t{key}: {value}");
+            }
+
+            const int size = 1024;
             using (var reader
-                = new StreamReader(context.Request.Body, Encoding.UTF8, true, 1024, true))
+                = new StreamReader(context.Request.Body, Encoding.UTF8, true, size, true))
             {
                 var bodyStr = await reader.ReadToEndAsync();
                 if (bodyStr.Length > 0)
+                {
                     Console.WriteLine($"Body: {bodyStr}");
+                }
+
                 context.Request.Body.Position = 0;
             }
 

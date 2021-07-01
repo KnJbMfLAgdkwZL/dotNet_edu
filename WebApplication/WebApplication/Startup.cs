@@ -22,15 +22,14 @@ namespace WebApplication
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseMiddleware<RequestHandlerMiddleware>();
             app.UseMiddleware<ErrorHandlerMiddleware>();
+            app.UseMiddleware<RequestHandlerMiddleware>();
             app.UseMiddleware<ResponseHandlerMiddleware>();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => { });
             if (env.IsDevelopment())
             {
-                //app.UseDeveloperExceptionPage();
             }
 
             app.UseRouting();
