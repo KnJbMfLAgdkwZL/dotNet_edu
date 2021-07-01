@@ -36,7 +36,9 @@ namespace WebApplication.middleware
             Console.WriteLine($"StatusCode: {statusCode}");
 
             foreach (var (key, value) in context.Response.Headers)
+            {
                 Console.WriteLine($"\t{key}: {value}");
+            }
 
             if (responseBody.Length > 0)
             {
