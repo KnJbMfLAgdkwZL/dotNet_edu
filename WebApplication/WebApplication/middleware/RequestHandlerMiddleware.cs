@@ -1,9 +1,10 @@
-using System;
-using System.IO;
-using System.Text;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System;
 
 namespace WebApplication.middleware
 {
@@ -19,6 +20,10 @@ namespace WebApplication.middleware
         public async Task InvokeAsync(HttpContext context)
         {
             context.Request.EnableBuffering();
+
+            var delimiter = string.Join("", Enumerable.Repeat("_", 100));
+            Console.WriteLine(delimiter);
+
 
             Console.WriteLine("Request");
             var method = context.Request.Method;
