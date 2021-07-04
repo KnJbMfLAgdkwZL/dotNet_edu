@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using WebApplication.Configs;
 using WebApplication.Exceptions;
@@ -25,9 +26,10 @@ namespace WebApplication.controllers
         [ProducesResponseType(200, Type = typeof(Order))]
         [ProducesResponseType(404)]
         [HttpGet("{id:long}")]
-        public async Task<ActionResult<Order>> GetAsync([FromRoute(Name = "id")] long id)
+        public async Task<ActionResult<Order>> GetAsync([FromRoute(Name = "id")] long id, CancellationToken token)
         {
-            var data = await _repository.SelectByIdAsync(id);
+            token.ThrowIfCancellationRequested();
+            var data = await _repository.SelectByIdAsync(id, token);
             if (data == null)
                 return NotFound();
             return Ok(data);
@@ -36,15 +38,16 @@ namespace WebApplication.controllers
         [ProducesResponseType(200, Type = typeof(long))]
         [ProducesResponseType(404)]
         [HttpPost("create")]
-        public async Task<ActionResult<long>> CreateAsync([FromBody] OrderSet order)
+        public async Task<ActionResult<long>> CreateAsync([FromBody] OrderSet order, CancellationToken token)
         {
+            token.ThrowIfCancellationRequested();
             var res = _clientsBlacklistConfig.Clients.Contains(order.ClientId);
             if (res)
             {
                 throw new BusinessException();
             }
 
-            return Ok(await _repository.InsertAsync(order));
+            return Ok(await _repository.InsertAsync(order, token));
         }
     }
 }
