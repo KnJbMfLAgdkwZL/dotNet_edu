@@ -20,7 +20,6 @@ namespace WebApplication.models
         protected async Task<List<Dictionary<string, object>>> SelectAsync(CancellationToken token,
             Dictionary<string, string> arguments = null)
         {
-            token.ThrowIfCancellationRequested();
             Connection.Open();
             await using var command = Connection.CreateCommand();
             var sql = $"SELECT * FROM '{Table}'";

@@ -12,7 +12,6 @@ namespace WebApplication.models
 
         public async Task<Order> SelectByIdAsync(long id, CancellationToken token)
         {
-            token.ThrowIfCancellationRequested();
             var rows = await SelectAsync(token, new Dictionary<string, string>()
             {
                 {"id", id.ToString()}
@@ -28,7 +27,6 @@ namespace WebApplication.models
 
         public async Task<long> InsertAsync(OrderSet order, CancellationToken token)
         {
-            token.ThrowIfCancellationRequested();
             Connection.Open();
             var command = Connection.CreateCommand();
             command.CommandText =

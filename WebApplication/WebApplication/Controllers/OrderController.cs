@@ -28,7 +28,6 @@ namespace WebApplication.controllers
         [HttpGet("{id:long}")]
         public async Task<ActionResult<Order>> GetAsync([FromRoute(Name = "id")] long id, CancellationToken token)
         {
-            token.ThrowIfCancellationRequested();
             var data = await _repository.SelectByIdAsync(id, token);
             if (data == null)
                 return NotFound();
@@ -40,7 +39,6 @@ namespace WebApplication.controllers
         [HttpPost("create")]
         public async Task<ActionResult<long>> CreateAsync([FromBody] OrderSet order, CancellationToken token)
         {
-            token.ThrowIfCancellationRequested();
             var res = _clientsBlacklistConfig.Clients.Contains(order.ClientId);
             if (res)
             {
