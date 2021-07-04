@@ -6,6 +6,7 @@ using WebApplication.Configs;
 using WebApplication.Tools;
 using WebApplication.middleware;
 using WebApplication.models;
+using WebApplication.Repositories;
 
 namespace WebApplication
 {
@@ -15,7 +16,7 @@ namespace WebApplication
         {
             services.AddControllers();
             services.AddSwaggerGen(c => { });
-            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderRepository, OrderRepositoryV2>();
             services.Configure<ClientsBlacklistConfig>(
                 ConfigurationManager.AppSetting.GetSection(nameof(ClientsBlacklistConfig)));
         }

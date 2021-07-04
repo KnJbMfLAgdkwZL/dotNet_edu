@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WebApplication.Configs;
 using WebApplication.Exceptions;
 using WebApplication.models;
+using WebApplication.Repositories;
 
 namespace WebApplication.controllers
 {

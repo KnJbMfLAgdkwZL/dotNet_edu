@@ -10,6 +10,10 @@ namespace WebApplication.models
         public DateTime DateCreate { get; set; }
         public long ClientId { get; set; }
 
+        public Order()
+        {
+        }
+
         public Order(long id, string name, string description, DateTime dateCreate)
         {
             Id = id;

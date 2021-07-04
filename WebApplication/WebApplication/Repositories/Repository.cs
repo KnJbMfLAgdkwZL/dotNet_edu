@@ -1,10 +1,10 @@
-using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Data.Sqlite;
 
-namespace WebApplication.models
+namespace WebApplication.Repositories
 {
     public abstract class Repository
     {

@@ -1,12 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System;
 using System.Threading;
+using System.Threading.Tasks;
+using WebApplication.models;
 
-namespace WebApplication.models
+namespace WebApplication.Repositories
 {
-    public class OrderRepository : Repository, IOrderRepository
+    public class OrderRepositoryV1 : Repository, IOrderRepository
     {
         protected override string Table { get; set; } = "order";
 

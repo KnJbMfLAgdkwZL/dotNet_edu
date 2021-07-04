@@ -1,7 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
+using WebApplication.models;
 
-namespace WebApplication.models
+namespace WebApplication.Repositories
 {
     public interface IOrderRepository
     {

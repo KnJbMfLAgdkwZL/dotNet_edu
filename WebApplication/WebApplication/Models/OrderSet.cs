@@ -6,6 +6,10 @@ namespace WebApplication.models
         public string Description { get; set; }
         public long ClientId { get; set; }
 
+        public OrderSet()
+        {
+        }
+
         public OrderSet(string name, string description)
         {
             Name = name;
