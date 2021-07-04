@@ -1,7 +1,7 @@
-using System;
-using System.IO;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 using System.Threading.Tasks;
+using System;
 
 namespace WebApplication.middleware
 {
@@ -16,7 +16,7 @@ namespace WebApplication.middleware
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var responseBody = "";
+            var bodyStr = "";
             await using (var swapStream = new MemoryStream())
             {
                 var originalResponseBody = context.Response.Body;
@@ -25,7 +25,7 @@ namespace WebApplication.middleware
                 await _next(context);
 
                 swapStream.Seek(0, SeekOrigin.Begin);
-                responseBody = new StreamReader(swapStream).ReadToEnd();
+                bodyStr = new StreamReader(swapStream).ReadToEnd();
                 swapStream.Seek(0, SeekOrigin.Begin);
                 await swapStream.CopyToAsync(originalResponseBody);
                 context.Response.Body = originalResponseBody;
@@ -40,9 +40,19 @@ namespace WebApplication.middleware
                 Console.WriteLine($"\t{key}: {value}");
             }
 
-            if (responseBody.Length > 0)
+            if (bodyStr.Length > 0)
             {
-                Console.WriteLine($"ResponseBody: {responseBody}");
+                string str;
+                if (bodyStr.Length > 1000)
+                {
+                    str = bodyStr[..1000] + "....";
+                }
+                else
+                {
+                    str = bodyStr;
+                }
+
+                Console.WriteLine($"Body: {str}");
             }
 
             Console.WriteLine();

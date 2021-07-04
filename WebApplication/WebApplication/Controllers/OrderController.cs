@@ -1,5 +1,9 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System.Linq;
+using System.Threading.Tasks;
+using WebApplication.Configs;
+using WebApplication.Exceptions;
 using WebApplication.models;
 
 namespace WebApplication.controllers
@@ -10,10 +14,12 @@ namespace WebApplication.controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _repository;
+        private readonly ClientsBlacklistConfig _clientsBlacklistConfig;
 
-        public OrderController(IOrderRepository repository)
+        public OrderController(IOrderRepository repository, IOptions<ClientsBlacklistConfig> opt)
         {
             _repository = repository;
+            _clientsBlacklistConfig = opt.Value;
         }
 
         [ProducesResponseType(200, Type = typeof(Order))]
@@ -32,6 +38,12 @@ namespace WebApplication.controllers
         [HttpPost("create")]
         public async Task<ActionResult<long>> CreateAsync([FromBody] OrderSet order)
         {
+            var res = _clientsBlacklistConfig.Clients.Contains(order.ClientId);
+            if (res)
+            {
+                throw new BusinessException();
+            }
+
             return Ok(await _repository.InsertAsync(order));
         }
     }

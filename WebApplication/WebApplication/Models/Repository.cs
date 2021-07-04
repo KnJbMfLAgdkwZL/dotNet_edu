@@ -1,15 +1,15 @@
+using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Data.Sqlite;
 
 namespace WebApplication.models
 {
     public abstract class Repository
     {
-        protected abstract string Table { set; get; }
-        private string Path { set; get; } = "../mainDB.sqlite";
-        protected SqliteConnection Connection { set; get; }
+        protected abstract string Table { get; set; }
+        private string Path { get; set; } = "../mainDB.sqlite";
+        protected SqliteConnection Connection { get; set; }
 
         protected Repository()
         {

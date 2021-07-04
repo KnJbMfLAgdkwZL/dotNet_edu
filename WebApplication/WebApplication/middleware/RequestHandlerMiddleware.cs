@@ -1,9 +1,10 @@
-using System;
-using System.IO;
-using System.Text;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System;
 
 namespace WebApplication.middleware
 {
@@ -19,6 +20,11 @@ namespace WebApplication.middleware
         public async Task InvokeAsync(HttpContext context)
         {
             context.Request.EnableBuffering();
+
+            const string delimiter =
+                "____________________________________________________________________________________________________";
+            Console.WriteLine(delimiter);
+
 
             Console.WriteLine("Request");
             var method = context.Request.Method;
@@ -36,9 +42,19 @@ namespace WebApplication.middleware
                 = new StreamReader(context.Request.Body, Encoding.UTF8, true, size, true))
             {
                 var bodyStr = await reader.ReadToEndAsync();
-                if (bodyStr.Length > 0)
+                if (bodyStr.Length is > 0)
                 {
-                    Console.WriteLine($"Body: {bodyStr}");
+                    string str;
+                    if (bodyStr.Length > 1000)
+                    {
+                        str = bodyStr[..1000] + "....";
+                    }
+                    else
+                    {
+                        str = bodyStr;
+                    }
+
+                    Console.WriteLine($"Body: {str}");
                 }
 
                 context.Request.Body.Position = 0;

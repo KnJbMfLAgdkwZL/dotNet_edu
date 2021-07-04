@@ -4,10 +4,11 @@ namespace WebApplication.models
 {
     public class Order
     {
-        public long Id { set; get; }
-        public string Name { set; get; }
-        public string Description { set; get; }
-        public DateTime DateCreate { set; get; }
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public DateTime DateCreate { get; set; }
+        public long ClientId { get; set; }
 
         public Order(long id, string name, string description, DateTime dateCreate)
         {
