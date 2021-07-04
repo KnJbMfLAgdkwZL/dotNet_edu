@@ -1,6 +1,7 @@
 using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebApplication.models
@@ -16,7 +17,8 @@ namespace WebApplication.models
             Connection = new SqliteConnection($"Data Source={Path}");
         }
 
-        protected async Task<List<Dictionary<string, object>>> SelectAsync(Dictionary<string, string> arguments = null)
+        protected async Task<List<Dictionary<string, object>>> SelectAsync(CancellationToken token,
+            Dictionary<string, string> arguments = null)
         {
             Connection.Open();
             await using var command = Connection.CreateCommand();
@@ -29,9 +31,9 @@ namespace WebApplication.models
             }
 
             command.CommandText = sql;
-            await using var reader = await command.ExecuteReaderAsync();
+            await using var reader = await command.ExecuteReaderAsync(token);
             var data = new List<Dictionary<string, object>>();
-            while (await reader.ReadAsync())
+            while (await reader.ReadAsync(token))
                 data.Add(Enumerable.Range(0, reader.FieldCount).ToDictionary(reader.GetName, reader.GetValue));
             Connection.Close();
             return data;

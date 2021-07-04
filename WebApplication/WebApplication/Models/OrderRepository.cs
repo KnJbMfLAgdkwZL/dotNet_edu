@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using System.Threading;
 
 namespace WebApplication.models
 {
@@ -9,9 +10,9 @@ namespace WebApplication.models
     {
         protected override string Table { get; set; } = "order";
 
-        public async Task<Order> SelectByIdAsync(long id)
+        public async Task<Order> SelectByIdAsync(long id, CancellationToken token)
         {
-            var rows = await SelectAsync(new Dictionary<string, string>()
+            var rows = await SelectAsync(token, new Dictionary<string, string>()
             {
                 {"id", id.ToString()}
             });
@@ -24,7 +25,7 @@ namespace WebApplication.models
             ).FirstOrDefault();
         }
 
-        public async Task<long> InsertAsync(OrderSet order)
+        public async Task<long> InsertAsync(OrderSet order, CancellationToken token)
         {
             Connection.Open();
             var command = Connection.CreateCommand();
@@ -34,8 +35,8 @@ namespace WebApplication.models
             command.Parameters.AddWithValue($"$name", order.Name);
             command.Parameters.AddWithValue($"$description", order.Description);
             command.Parameters.AddWithValue($"$clientId", order.ClientId);
-            var temp = await command.ExecuteScalarAsync();
-            var id = long.Parse(temp.ToString());
+            var temp = await command.ExecuteScalarAsync(token);
+            var id = long.Parse(temp?.ToString() ?? string.Empty);
             Connection.Close();
             return id;
         }
