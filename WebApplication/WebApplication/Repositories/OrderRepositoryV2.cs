@@ -4,12 +4,13 @@ using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using WebApplication.models;
+using WebApplication.Tools;
 
 namespace WebApplication.Repositories
 {
     public class OrderRepositoryV2 : IOrderRepository
     {
-        private string ConnectionString { get; set; } = "Data Source=../mainDB.sqlite";
+        private string ConnectionString { get; set; } = ConfigurationManager.AppSetting["ConnectionStrings"];
 
         public async Task<Order> SelectByIdAsync(long id, CancellationToken token)
         {

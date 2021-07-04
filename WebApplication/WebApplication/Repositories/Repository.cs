@@ -3,13 +3,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
+using WebApplication.Tools;
 
 namespace WebApplication.Repositories
 {
     public abstract class Repository
     {
         protected abstract string Table { get; set; }
-        private string Path { get; set; } = "../mainDB.sqlite";
+        private string Path { get; set; } = ConfigurationManager.AppSetting["ConnectionStrings"];
         protected SqliteConnection Connection { get; set; }
 
         protected Repository()
