@@ -26,7 +26,7 @@ namespace WebApplication.middleware
             catch (BusinessException ex)
             {
                 ShowError(ex);
-                await SendResult(context, ex, (int) HttpStatusCode.InternalServerError);
+                await SendResult(context, ex, (int) HttpStatusCode.BadRequest);
             }
             catch (Exception ex)
             {

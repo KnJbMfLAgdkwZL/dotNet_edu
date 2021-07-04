@@ -21,7 +21,8 @@ namespace WebApplication.middleware
         {
             context.Request.EnableBuffering();
 
-            var delimiter = string.Join("", Enumerable.Repeat("_", 100));
+            const string delimiter =
+                "____________________________________________________________________________________________________";
             Console.WriteLine(delimiter);
 
 
@@ -41,9 +42,19 @@ namespace WebApplication.middleware
                 = new StreamReader(context.Request.Body, Encoding.UTF8, true, size, true))
             {
                 var bodyStr = await reader.ReadToEndAsync();
-                if (bodyStr.Length > 0)
+                if (bodyStr.Length is > 0)
                 {
-                    Console.WriteLine($"Body: {bodyStr}");
+                    string str;
+                    if (bodyStr.Length > 1000)
+                    {
+                        str = bodyStr[..1000] + "....";
+                    }
+                    else
+                    {
+                        str = bodyStr;
+                    }
+
+                    Console.WriteLine($"Body: {str}");
                 }
 
                 context.Request.Body.Position = 0;
