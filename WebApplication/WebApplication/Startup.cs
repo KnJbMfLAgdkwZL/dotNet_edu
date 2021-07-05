@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApplication.Configs;
@@ -7,18 +8,26 @@ using WebApplication.Tools;
 using WebApplication.middleware;
 using WebApplication.models;
 using WebApplication.Repositories;
+using WebApplication.Tools;
 
 namespace WebApplication
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
             services.AddSwaggerGen(c => { });
             services.AddScoped<IOrderRepository, OrderRepositoryV2>();
-            services.Configure<ClientsBlacklistConfig>(
-                ConfigurationManager.AppSetting.GetSection(nameof(ClientsBlacklistConfig)));
+            services.ConfigureOptions<DataBaseConfig>(_configuration);
+            services.ConfigureOptions<ClientsBlacklistConfig>(_configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
