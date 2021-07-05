@@ -15,8 +15,7 @@ namespace WebApplication.Tools
                 .AddJsonFile("appsettings.json")
                 .Build();
         }
-        
-        
+
         public static IServiceCollection ConfigureOptions<TOptions>(
             this IServiceCollection services,
             IConfiguration configuration,
@@ -27,9 +26,5 @@ namespace WebApplication.Tools
 
             return services.Configure<TOptions>(configurationSection);
         }
-
-        
-        
-        
     }
 }

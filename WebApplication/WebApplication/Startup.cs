@@ -25,7 +25,7 @@ namespace WebApplication
         {
             services.AddControllers();
             services.AddSwaggerGen(c => { });
-            services.AddScoped<IOrderRepository, OrderRepositoryV2>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.ConfigureOptions<DataBaseConfig>(_configuration);
             services.ConfigureOptions<ClientsBlacklistConfig>(_configuration);
         }
